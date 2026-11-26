@@ -4,11 +4,11 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.routers import auth
+from app.routers import auth, workspaces
 
 app = FastAPI(title="TaskFlow")
 app.include_router(auth.router)
-
+app.include_router(workspaces.router)
 
 @app.get("/health")
 def health():
