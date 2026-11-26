@@ -69,3 +69,41 @@ def admin(client):
 @pytest.fixture
 def member(client):
     return make_user(client, "Rahul", "rahul@example.com")
+
+@pytest.fixture
+def outsider(client):
+    return make_user(client, "Outsider", "outsider@example.com")
+
+
+@pytest.fixture
+def ws(client, admin, member):
+    r = client.post("/workspaces", json={"name": "My Team"}, headers=admin)
+    assert r.status_code == 201
+    data = r.json()
+    r = client.post(
+        f"/workspaces/{data['id']}/members",
+        json={"email": "rahul@example.com", "role": "member"},
+        headers=admin,
+    )
+    assert r.status_code == 201
+    return data
+
+
+@pytest.fixture
+def proj(client, admin, ws):
+    r = client.post(
+        f"/workspaces/{ws['id']}/projects", json={"name": "Website"}, headers=admin
+    )
+    assert r.status_code == 201
+    return r.json()
+
+
+@pytest.fixture
+def tsk(client, admin, ws, proj):
+    r = client.post(
+        f"/workspaces/{ws['id']}/projects/{proj['id']}/tasks",
+        json={"title": "Navbar"},
+        headers=admin,
+    )
+    assert r.status_code == 201
+    return r.json()
