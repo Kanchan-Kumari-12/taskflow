@@ -8,6 +8,9 @@ from app.schemas.auth import Token
 from app.schemas.user import UserCreate, UserRead
 from app.services import user_service
 
+from app.core.deps import get_current_user
+from app.models.user import User
+
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
@@ -32,3 +35,7 @@ def login(
             headers={"WWW-Authenticate": "Bearer"},
         )
     return Token(access_token=create_access_token(str(user.id)))
+
+@router.get("/me", response_model=UserRead)
+def read_me(current_user: User = Depends(get_current_user)):
+    return current_user
