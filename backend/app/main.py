@@ -5,12 +5,14 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 
-from app.routers import auth, projects, workspaces
+
+from app.routers import auth, projects, tasks, workspaces
 
 app = FastAPI(title="TaskFlow")
 app.include_router(auth.router)
 app.include_router(workspaces.router)
 app.include_router(projects.router)
+app.include_router(tasks.router)
 
 @app.get("/health")
 def health():
