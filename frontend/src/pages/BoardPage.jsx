@@ -10,6 +10,7 @@ import {
   updateTask,
 } from '../api'
 import TaskCard from '../components/TaskCard'
+import TaskModal from '../components/TaskModal'
 import { COLUMNS } from '../constants'
 
 function BoardView({ workspaceId, projectId }) {
@@ -24,6 +25,7 @@ function BoardView({ workspaceId, projectId }) {
   const [error, setError] = useState('')
   const [title, setTitle] = useState('')
   const [adding, setAdding] = useState(false)
+  const [openTaskId, setOpenTaskId] = useState(null)
 
   useEffect(() => {
     let ignore = false
@@ -51,6 +53,7 @@ function BoardView({ workspaceId, projectId }) {
 
   const isAdmin = members.find((m) => m.user_id === user.id)?.role === 'admin'
   const nameById = Object.fromEntries(members.map((m) => [m.user_id, m.name]))
+  const openTask = tasks.find((t) => t.id === openTaskId)
 
   async function handleAdd(e) {
     e.preventDefault()
@@ -79,8 +82,14 @@ function BoardView({ workspaceId, projectId }) {
     }
   }
 
+  async function handleUpdate(task, changes) {
+    const updated = await updateTask(workspaceId, projectId, task.id, changes)
+    setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)))
+    return updated
+  }
+
   async function handleDelete(task) {
-    if (!window.confirm(`"${task.title}" Are You Sure you want to Delete this?`)) return
+    if (!window.confirm(`"${task.title}" delete karna hai?`)) return
     setError('')
     try {
       await deleteTask(workspaceId, projectId, task.id)
@@ -96,7 +105,10 @@ function BoardView({ workspaceId, projectId }) {
     return (
       <div className="p-8">
         <p className="text-red-600">{error || 'Project not found'}</p>
-        <Link to={`/w/${workspaceId}`} className="mt-2 inline-block text-sm text-indigo-600 hover:underline">
+        <Link
+          to={`/w/${workspaceId}`}
+          className="mt-2 inline-block text-sm text-indigo-600 hover:underline"
+        >
           ← Back to projects
         </Link>
       </div>
@@ -134,6 +146,7 @@ function BoardView({ workspaceId, projectId }) {
                     task={task}
                     assigneeName={nameById[task.assignee_id]}
                     canDelete={isAdmin}
+                    onOpen={(t) => setOpenTaskId(t.id)}
                     onMove={handleMove}
                     onDelete={handleDelete}
                   />
@@ -166,6 +179,20 @@ function BoardView({ workspaceId, projectId }) {
           )
         })}
       </div>
+
+      {openTask && (
+        <TaskModal
+          key={openTask.id}
+          task={openTask}
+          members={members}
+          user={user}
+          isAdmin={isAdmin}
+          workspaceId={workspaceId}
+          projectId={projectId}
+          onUpdate={handleUpdate}
+          onClose={() => setOpenTaskId(null)}
+        />
+      )}
     </div>
   )
 }

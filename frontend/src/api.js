@@ -104,3 +104,27 @@ export function deleteTask(workspaceId, projectId, taskId) {
     { method: 'DELETE' },
   )
 }
+
+export function getComments(workspaceId, projectId, taskId) {
+  return request(
+    `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/comments`,
+  )
+}
+
+export function createComment(workspaceId, projectId, taskId, body) {
+  return request(
+    `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/comments`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body }),
+    },
+  )
+}
+
+export function deleteComment(workspaceId, projectId, taskId, commentId) {
+  return request(
+    `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/comments/${commentId}`,
+    { method: 'DELETE' },
+  )
+}

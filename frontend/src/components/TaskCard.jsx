@@ -1,13 +1,25 @@
 import { COLUMNS } from '../constants'
 
-export default function TaskCard({ task, assigneeName, canDelete, onMove, onDelete }) {
+export default function TaskCard({
+  task,
+  assigneeName,
+  canDelete,
+  onOpen,
+  onMove,
+  onDelete,
+}) {
   const index = COLUMNS.findIndex((c) => c.key === task.status)
   const prev = COLUMNS[index - 1]
   const next = COLUMNS[index + 1]
 
   return (
     <div className="rounded-lg bg-white p-3 shadow-sm ring-1 ring-slate-200">
-      <p className="text-sm font-medium text-slate-800">{task.title}</p>
+      <button
+        onClick={() => onOpen(task)}
+        className="text-left text-sm font-medium text-slate-800 hover:text-indigo-600"
+      >
+        {task.title}
+      </button>
       {task.due_date && (
         <p className="mt-1 text-xs text-slate-500">
           Due{' '}
