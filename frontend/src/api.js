@@ -42,3 +42,31 @@ export function register(name, email, password) {
     body: JSON.stringify({ name, email, password }),
   })
 }
+
+export function getWorkspaces() {
+  return request('/workspaces')
+}
+
+export function createWorkspace(name) {
+  return request('/workspaces', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name }),
+  })
+}
+
+export function getMembers(workspaceId) {
+  return request(`/workspaces/${workspaceId}/members`)
+}
+
+export function getProjects(workspaceId) {
+  return request(`/workspaces/${workspaceId}/projects`)
+}
+
+export function createProject(workspaceId, name, description) {
+  return request(`/workspaces/${workspaceId}/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, description: description || null }),
+  })
+}
