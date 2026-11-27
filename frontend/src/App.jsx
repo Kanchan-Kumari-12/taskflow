@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import WorkspacePage from './pages/WorkspacePage'
 import { GuestRoute, ProtectedRoute } from './RouteGuards'
+import BoardPage from './pages/BoardPage'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/w/:workspaceId" element={<WorkspacePage />} />
+          <Route path="/w/:workspaceId/p/:projectId" element={<BoardPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -70,3 +70,37 @@ export function createProject(workspaceId, name, description) {
     body: JSON.stringify({ name, description: description || null }),
   })
 }
+
+export function getProject(workspaceId, projectId) {
+  return request(`/workspaces/${workspaceId}/projects/${projectId}`)
+}
+
+export function getTasks(workspaceId, projectId) {
+  return request(`/workspaces/${workspaceId}/projects/${projectId}/tasks`)
+}
+
+export function createTask(workspaceId, projectId, title) {
+  return request(`/workspaces/${workspaceId}/projects/${projectId}/tasks`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title }),
+  })
+}
+
+export function updateTask(workspaceId, projectId, taskId, changes) {
+  return request(
+    `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(changes),
+    },
+  )
+}
+
+export function deleteTask(workspaceId, projectId, taskId) {
+  return request(
+    `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
+    { method: 'DELETE' },
+  )
+}

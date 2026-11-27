@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useOutletContext, useParams } from 'react-router-dom'
+
+import { Link, useOutletContext, useParams } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import { createProject, getMembers, getProjects } from '../api'
 
@@ -123,8 +124,8 @@ function ProjectsView({ workspaceId }) {
       ) : projects.length === 0 ? (
         <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-10 text-center text-slate-500">
           {isAdmin
-            ? 'Abhi koi project nahi hai. "+ New project" se pehla bana lo.'
-            : 'Abhi koi project nahi hai. Admin ke project banane ka wait karo.'}
+            ? 'No Project Here "+ New project" To Create Project'
+            : 'No Project Here. Please wait for Admin to Create Project.'}
         </div>
       ) : (
         <div className="mt-6 overflow-x-auto rounded-xl bg-white shadow-sm">
@@ -139,7 +140,14 @@ function ProjectsView({ workspaceId }) {
             <tbody className="divide-y divide-slate-100">
               {projects.map((p) => (
                 <tr key={p.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-800">{p.name}</td>
+                    <td className="px-4 py-3 font-medium">
+                        <Link
+                            to={`/w/${workspaceId}/p/${p.id}`}
+                            className="text-indigo-600 hover:underline"
+                        >
+                            {p.name}
+                        </Link>
+                    </td>
                   <td className="px-4 py-3 text-slate-500">{p.description ?? '—'}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-slate-500">
                     {new Date(p.created_at).toLocaleDateString('en-IN', { dateStyle: 'medium' })}

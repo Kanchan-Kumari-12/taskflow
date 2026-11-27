@@ -96,7 +96,7 @@ export default function Sidebar({
       <nav className="mt-6 flex-1 px-3">
         <NavLink
           to={currentId ? `/w/${currentId}` : '/'}
-          end
+          end={!currentId}
           className={({ isActive }) =>
             `block rounded-lg px-3 py-2 text-sm ${
               isActive ? 'bg-slate-800 text-white' : 'hover:bg-slate-800/60'

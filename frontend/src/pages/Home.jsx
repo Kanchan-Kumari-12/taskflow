@@ -11,8 +11,7 @@ export default function Home() {
     <div className="p-8">
       <h2 className="text-xl font-semibold text-slate-800">Welcome to TaskFlow 👋</h2>
       <p className="mt-2 text-slate-500">
-        Shuru karne ke liye left sidebar mein <b>+ New workspace</b> se apna pehla
-        workspace banao.
+        To Start click <b>+ New workspace</b> in Left Navbar to Create Your first Workspace.
       </p>
     </div>
   )
